@@ -32,15 +32,15 @@ def start_timer():
 
     if rep_counter in range(1, 8, 2):
         title_label.config(text="Work", fg=GREEN)
-        countdown_mechanism(1)
+        countdown_mechanism(WORK_SECS)
     elif rep_counter in range(2, 7, 2):
         title_label.config(text="Short Break", fg=RED)
         checkmarks_label.config(text=f"{'✔' * int((rep_counter / 2))}")
-        countdown_mechanism(1)
+        countdown_mechanism(SHORT_BREAK_SECS)
     elif rep_counter == 8:
         title_label.config(text="Long Break", fg=RED)
         checkmarks_label.config(text=f"{'✔' * 4}")
-        countdown_mechanism(1)
+        countdown_mechanism(LONG_BREAK_SECS)
 
 
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- #
