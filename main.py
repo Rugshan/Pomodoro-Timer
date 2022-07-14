@@ -21,29 +21,32 @@ rep_counter = 0
 def timer_reset():
     global rep_counter
     rep_counter = 0
+    checkmarks_label.config(text="")
+    title_label.config(text="Timer", fg=GREEN)
+
 
 # ---------------------------- TIMER MECHANISM ------------------------------- #
 def start_timer():
-
     global rep_counter
     rep_counter += 1
 
     if rep_counter in range(1, 8, 2):
-        countdown_mechanism(5)
+        title_label.config(text="Work", fg=GREEN)
+        countdown_mechanism(1)
     elif rep_counter in range(2, 7, 2):
+        title_label.config(text="Short Break", fg=RED)
         checkmarks_label.config(text=f"{'✔' * int((rep_counter / 2))}")
-        countdown_mechanism(2)
+        countdown_mechanism(1)
     elif rep_counter == 8:
+        title_label.config(text="Long Break", fg=RED)
         checkmarks_label.config(text=f"{'✔' * 4}")
-        countdown_mechanism(10)
-
+        countdown_mechanism(1)
 
 
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- #
 
 
 def countdown_mechanism(total_seconds):
-
     # Calculate Timer Minutes:Seconds
     minutes_remaining = int(total_seconds / 60)
     seconds_remaining = int(total_seconds % 60)
@@ -67,7 +70,7 @@ window.title("Pomodoro Timer")
 window.config(padx=100, pady=50, bg=YELLOW)
 
 # Timer Title
-title_label = Label(text="Timer", font=(FONT_NAME, 38, "bold"), bg=YELLOW, fg=GREEN)
+title_label = Label(text="Timer", font=(FONT_NAME, 38, "bold"), bg=YELLOW, fg=GREEN, width=12)
 title_label.grid(row=0, column=1, sticky="N")
 
 # Canvas to Layer Widgets
@@ -90,7 +93,6 @@ start_button.grid(row=2, column=0, sticky="E")
 # Reset Button
 start_button = Button(text="Reset", command=timer_reset)
 start_button.grid(row=2, column=2, sticky="W")
-
 
 # Checkmarks Label
 checkmarks_label = Label(text="", fg=GREEN, bg=YELLOW, font=(FONT_NAME, 20))
