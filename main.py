@@ -7,21 +7,43 @@ RED = "#e7305b"
 GREEN = "#9bdeac"
 YELLOW = "#f7f5dd"
 FONT_NAME = "Courier"
-WORK_MIN = 25
-SHORT_BREAK_MIN = 5
-LONG_BREAK_MIN = 20
+WORK_SECS = 25 * 60
+SHORT_BREAK_SECS = 5 * 60
+LONG_BREAK_SECS = 20 * 60
 CANVAS_WIDTH = 200
 CANVAS_HEIGHT = 224
 
+# Global Variable
+rep_counter = 0
+
 
 # ---------------------------- TIMER RESET ------------------------------- #
+def timer_reset():
+    global rep_counter
+    rep_counter = 0
 
-# ---------------------------- TIMER MECHANISM ------------------------------- # 
+# ---------------------------- TIMER MECHANISM ------------------------------- #
+def start_timer():
+
+    global rep_counter
+    rep_counter += 1
+
+    if rep_counter in range(1, 8, 2):
+        countdown_mechanism(5)
+    elif rep_counter in range(2, 7, 2):
+        checkmarks_label.config(text=f"{'✔' * int((rep_counter / 2))}")
+        countdown_mechanism(2)
+    elif rep_counter == 8:
+        checkmarks_label.config(text=f"{'✔' * 4}")
+        countdown_mechanism(10)
+
+
 
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- #
 
 
 def countdown_mechanism(total_seconds):
+
     # Calculate Timer Minutes:Seconds
     minutes_remaining = int(total_seconds / 60)
     seconds_remaining = int(total_seconds % 60)
@@ -33,6 +55,8 @@ def countdown_mechanism(total_seconds):
     if total_seconds > 0:
         window.after(1000, countdown_mechanism,
                      total_seconds - 1)  # Wait x amount of time, call function, passing it an argument (*args).
+    elif rep_counter <= 8:
+        start_timer()
 
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -59,19 +83,17 @@ clock_text = canvas.create_text((CANVAS_WIDTH / 2),
                                 fill="white",
                                 font=(FONT_NAME, 35, "bold"))
 
-# Update Digital Clock
-countdown_mechanism(10)
-
 # Start Button
-start_button = Button(text="Start")
+start_button = Button(text="Start", command=start_timer)
 start_button.grid(row=2, column=0, sticky="E")
 
 # Reset Button
-start_button = Button(text="Reset")
+start_button = Button(text="Reset", command=timer_reset)
 start_button.grid(row=2, column=2, sticky="W")
 
+
 # Checkmarks Label
-checkmarks_label = Label(text="✔", fg=GREEN, bg=YELLOW, font=(FONT_NAME, 20))
+checkmarks_label = Label(text="", fg=GREEN, bg=YELLOW, font=(FONT_NAME, 20))
 checkmarks_label.grid(row=3, column=1)
 
 # Window Main Loop
